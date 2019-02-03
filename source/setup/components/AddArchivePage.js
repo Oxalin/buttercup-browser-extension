@@ -155,7 +155,8 @@ class AddArchivePage extends PureComponent {
         const hasAuthenticatedDropbox = typeof this.props.dropboxAuthToken === "string";
         const hasAuthenticatedGoogleDrive = typeof this.props.googleDriveAccessToken === "string";
         const hasAuthenticatedMyButtercup =
-            this.props.myButtercupAuthID === this.state.myButtercupAuthenticationID && this.props.myButtercupAuthToken;
+            this.props.myButtercupAuthID === this.state.myButtercupAuthenticationID &&
+            !!this.props.myButtercupAuthToken;
         const hasAuthenticated =
             (isTargetingWebDAV && this.props.isConnected) ||
             (isTargetingDropbox && hasAuthenticatedDropbox) ||
@@ -169,14 +170,10 @@ class AddArchivePage extends PureComponent {
             .case("mybuttercup", "mybuttercup")
             .case("localfile", "localfile");
         const fetchType = fetchTypeSwitch(this.props.selectedArchiveType);
-        const chooserTypeSwitch = switchcase()
-            .case("mybuttercup", MyButtercupArchiveChooser)
-            .default(ArchiveTypeChooser);
-        const ArchiveTypeChooserInst = chooserTypeSwitch(this.props.selectedArchiveType);
         return (
             <LayoutMain title="Add Archive">
                 <H4>Choose Vault Type</H4>
-                <ArchiveTypeChooserInst disabled={hasAuthenticated} />
+                <ArchiveTypeChooser disabled={hasAuthenticated} />
                 <Spacer />
                 <If condition={this.props.selectedArchiveType}>
                     <Choose>

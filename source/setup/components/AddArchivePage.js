@@ -175,33 +175,37 @@ class AddArchivePage extends PureComponent {
                 <H4>Choose Vault Type</H4>
                 <ArchiveTypeChooser disabled={hasAuthenticated} />
                 <Spacer />
-                <If condition={this.props.selectedArchiveType}>
-                    <Choose>
-                        <When condition={hasAuthenticated}>
-                            <H4>Choose or Create Vault</H4>
-                            <SplitView>
-                                <Card>
-                                    <RemoteExplorer
-                                        onCreateRemotePath={path => this.props.onCreateRemotePath(path)}
-                                        onSelectRemotePath={path => this.props.onSelectRemotePath(path)}
-                                        selectedFilename={this.props.selectedFilename}
-                                        selectedFilenameNeedsCreation={this.props.selectedFilenameNeedsCreation}
-                                        fetchType={fetchType}
-                                    />
-                                </Card>
-                                <Card>{this.renderArchiveNameInput()}</Card>
-                            </SplitView>
-                        </When>
-                        <Otherwise>{this.renderConnectionInfo()}</Otherwise>
-                    </Choose>
-                </If>
-                <If condition={isTargetingMyButtercup && hasAuthenticatedMyButtercup}>
-                    <h3>Choose Archive(s)</h3>
-                    <MyButtercupArchiveChooser />
-                    <If condition={this.props.selectedMyButtercupArchives.length > 0}>
-                        {this.renderArchiveNameInput()}
-                    </If>
-                </If>
+                <Choose>
+                    <When condition={isTargetingMyButtercup && hasAuthenticatedMyButtercup}>
+                        <h3>Choose Archive(s)</h3>
+                        <MyButtercupArchiveChooser />
+                        <If condition={this.props.selectedMyButtercupArchives.length > 0}>
+                            {this.renderArchiveNameInput()}
+                        </If>
+                    </When>
+                    <Otherwise>
+                        <If condition={this.props.selectedArchiveType}>
+                            <Choose>
+                                <When condition={hasAuthenticated}>
+                                    <H4>Choose or Create Vault</H4>
+                                    <SplitView>
+                                        <Card>
+                                            <RemoteExplorer
+                                                onCreateRemotePath={path => this.props.onCreateRemotePath(path)}
+                                                onSelectRemotePath={path => this.props.onSelectRemotePath(path)}
+                                                selectedFilename={this.props.selectedFilename}
+                                                selectedFilenameNeedsCreation={this.props.selectedFilenameNeedsCreation}
+                                                fetchType={fetchType}
+                                            />
+                                        </Card>
+                                        <Card>{this.renderArchiveNameInput()}</Card>
+                                    </SplitView>
+                                </When>
+                                <Otherwise>{this.renderConnectionInfo()}</Otherwise>
+                            </Choose>
+                        </If>
+                    </Otherwise>
+                </Choose>
             </LayoutMain>
         );
     }
@@ -339,9 +343,7 @@ class AddArchivePage extends PureComponent {
                     <When condition={this.props.selectedArchiveType === "mybuttercup"}>
                         <Card>
                             <H4>My Buttercup</H4>
-                            <p>
-                                To start, please grant Buttercup access to your My Buttercup account.
-                            </p>
+                            <p>To start, please grant Buttercup access to your My Buttercup account.</p>
                             <Button
                                 icon="key"
                                 onClick={::this.handleMyButtercupAuth}

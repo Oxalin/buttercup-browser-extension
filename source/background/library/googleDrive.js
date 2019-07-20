@@ -1,7 +1,6 @@
 import watch from "redux-watch";
 import ms from "ms";
 import uuid from "uuid/v4";
-import sleep from "sleep-promise";
 import { OAuth2Client } from "google-auth-library";
 import store, { dispatch, getState } from "../redux/index.js";
 import { setAccessToken, setAuthID, setAuthCode, setRefreshToken } from "../../shared/actions/googleDrive.js";
@@ -10,7 +9,6 @@ import { getAuthID, getAuthCode } from "../../shared/selectors/googleDrive.js";
 import { closeTabs, createNewTab } from "../../shared/library/extension.js";
 import { getArchiveManager } from "./buttercup.js";
 import secrets from "../../../secrets.json";
-import { resolve } from "dns";
 
 const OAUTH_REDIRECT_URL = "https://buttercup.pw?googleauth";
 
